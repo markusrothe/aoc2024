@@ -13,7 +13,8 @@ fetchcontent_declare(Catch2
 fetchcontent_makeavailable(Catch2)
 
 add_executable(AOC
-	src/day_one.cpp)
+	src/day_one.cpp
+	src/day_two.cpp)
 
 target_link_libraries(AOC
 	PRIVATE
