@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(AOC24)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
 
 include(FetchContent)
 
@@ -27,4 +27,4 @@ include(ctest)
 include(catch)
 
 install(TARGETS AOC DESTINATION bin)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/input/day1_input DESTINATION input)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/input/ DESTINATION bin)

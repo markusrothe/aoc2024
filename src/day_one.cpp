@@ -4,6 +4,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <unordered_map>
 
 int get_distance(std::vector<int>& left, std::vector<int>& right)
 {
@@ -17,7 +18,7 @@ int get_distance(std::vector<int>& left, std::vector<int>& right)
 	return sum;
 }
 
-TEST_CASE("AOC24_Day1_example_distance")
+TEST_CASE("AOC24_Day1_example_distance", "[day1]")
 {
 	std::vector left = {3, 4, 2, 1, 3, 3};
 	std::vector right = {4, 3, 5, 3, 9, 3};
@@ -25,32 +26,38 @@ TEST_CASE("AOC24_Day1_example_distance")
 	REQUIRE(get_distance(left, right) == 11);
 }
 
-int get_similarity(std::vector<int>& left, std::vector<int>& right)
+int get_similarity(std::vector<int> const& left, std::vector<int> const& right)
 {
-	int similarity = 0;
-	for (auto i : left)
+	std::unordered_map<int, std::pair<int, int>> map;
+	for (auto const i : left)
 	{
-		for (auto j : right)
-		{
-			if (i == j)
-			{
-				similarity += i;
-			}
-		}
+		map[i].first++;
+	}
+
+	for (auto const i : right)
+	{
+		map[i].second++;
+	}
+
+	int similarity{0};
+	for (auto i = 0; i < map.size(); ++i)
+	{
+		auto const& [l, r] = map[i];
+		similarity += i * l * r;
 	}
 
 	return similarity;
 }
 
-TEST_CASE("AOC24_Day1_example_similarity")
+TEST_CASE("AOC24_Day1_example_similarity", "[day1]")
 {
-	std::vector left = {3, 4, 2, 1, 3, 3};
-	std::vector right = {4, 3, 5, 3, 9, 3};
+	std::vector const left = {3, 4, 2, 1, 3, 3};
+	std::vector const right = {4, 3, 5, 3, 9, 3};
 
 	REQUIRE(get_similarity(left, right) == 31);
 }
 
-TEST_CASE("AOC24_day1_input")
+TEST_CASE("AOC24_day1_input", "[day1]")
 {
 	std::ifstream ifs("day1_input");
 	std::vector<int> left, right;
@@ -61,6 +68,13 @@ TEST_CASE("AOC24_day1_input")
 		right.push_back(r);
 	}
 
-	std::cout << get_distance(left, right) << std::endl;
-	std::cout << get_similarity(left, right) << std::endl;
+	SECTION("get_distance for input")
+	{
+		std::cout << get_distance(left, right) << std::endl;
+	}
+
+	SECTION("get_similarity for input")
+	{
+		std::cout << get_similarity(left, right) << std::endl;
+	}
 }
